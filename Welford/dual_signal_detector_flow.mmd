@@ -1,0 +1,17 @@
+flowchart TD
+    Start(["New data point arrives<br/>Signal A + Signal B"]) --> Phase{"Still in<br/>learning period?"}
+
+    Phase -->|Yes| Learn["Learn Signal A baseline:<br/>typical level - mean<br/>natural spread - std dev"]
+    Learn --> LearnDone{"Learning period<br/>complete?"}
+    LearnDone -->|Not yet| Wait(["No alert - still learning"])
+    LearnDone -->|Yes| Lock["Lock Signal A spread - std dev<br/>used later for all z-scores"]
+    Lock --> Wait
+
+    Phase -->|No| ZScore["Compute z-score for Signal A:<br/><br/>z = current value - baseline mean / locked std dev<br/><br/>How many typical spreads above normal?"]
+    ZScore --> ZCheck{"z > threshold?<br/>e.g. z > 3.5"}
+    ZCheck -->|No| Update["Normal point:<br/>update baseline mean only<br/>spread stays locked"]
+    Update --> OK(["No alert"])
+
+    ZCheck -->|Yes| Collapse{"B is near zero?<br/>0 <= B <= floor"}
+    Collapse -->|No| Update
+    Collapse -->|Yes| Alert(["Event detected<br/>spike in A + collapse in B"])
