@@ -1,0 +1,24 @@
+# Postgres: SystemHealth_EU on kpihub-postgis (see KPIHub/PostGIS/DBInit/Dockerrun).
+services:
+  system-health-dash:
+    build:
+      context: ..
+      dockerfile: dashboard/Dockerfile
+    container_name: system-health-dash
+    ports:
+      - "8051:8051"
+    env_file:
+      - ../../../../.env
+    environment:
+      ALARM_DB_BACKEND: postgresql
+      ALARM_HOST: kpihub-postgis
+      ALARM_PORT: "5432"
+      ALARM_DATABASE: SystemHealth_EU
+      ALARM_DASH_PORT: "8051"
+    networks:
+      - kpihub-net
+    restart: unless-stopped
+
+networks:
+  kpihub-net:
+    external: true

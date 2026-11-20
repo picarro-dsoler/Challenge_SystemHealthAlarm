@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets
+.env
+.env.*
+
+# SQLite WAL (keep .db if you want it in repo; ignore ephemeral WAL files)
+*.db-shm
+*.db-wal
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
